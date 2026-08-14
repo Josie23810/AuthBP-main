@@ -1,0 +1,36 @@
+{
+  "name": "boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon api/index.js",
+    "start": "node api/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SamKarish/AuthBP.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SamKarish/AuthBP/issues"
+  },
+  "homepage": "https://github.com/SamKarish/AuthBP#readme",
+  "dependencies": {
+    "@tsparticles/engine": "^3.8.1",
+    "axios": "^1.9.0",
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.5.0",
+    "express": "^4.19.2",
+    "express-list-endpoints": "^7.1.1",
+    "framer-motion": "^12.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.14.2",
+    "nodemon": "^3.1.10",
+    "tsparticles-engine": "^2.12.0"
+  }
+}

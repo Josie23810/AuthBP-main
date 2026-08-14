@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Libre+Baskerville:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background:
+    radial-gradient(circle at top, rgba(64, 196, 255, 0.14), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(255, 77, 77, 0.12), transparent 24%),
+    #07111f;
+  color: #f8fafc;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(64, 196, 255, 0.35);
+  color: white;
+}
+
+.home-shell::before {
+  content: '';
+  position: absolute;
+  inset: -20% -10% auto -10%;
+  height: 90%;
+  background: linear-gradient(120deg, rgba(64, 196, 255, 0.17), rgba(96, 165, 250, 0.05), rgba(255, 77, 77, 0.12), rgba(64, 196, 255, 0.17));
+  filter: blur(52px);
+  animation: auroraShift 18s ease-in-out infinite alternate;
+}
+
+.aurora-grid {
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: radial-gradient(circle at center, black 0%, rgba(0, 0, 0, 0.6) 48%, transparent 100%);
+  animation: gridFloat 20s linear infinite;
+}
+
+@keyframes auroraShift {
+  0% {
+    transform: translate3d(-2%, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, 4%, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(-1%, 2%, 0) scale(1.02);
+  }
+}
+
+@keyframes gridFloat {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(12px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
