@@ -8,6 +8,7 @@ import {
 } from "../redux/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import OAuth from "../components/OAuth";
+import { apiFetch } from "../utils/api";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 40 },
@@ -50,12 +51,10 @@ export default function SignIn() {
     e.preventDefault();
     try {
       dispatch(signInStart());
-      const res = await fetch("/api/auth/signin", {
+      const data = await apiFetch("/api/auth/signin", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-      const data = await res.json();
       if (data.success === false) {
         dispatch(signInFailure(data));
         return;
@@ -63,7 +62,7 @@ export default function SignIn() {
       dispatch(signInSuccess(data));
       navigate("/");
     } catch (error) {
-      dispatch(signInFailure(error));
+      dispatch(signInFailure({ message: error.message || "Something went wrong!" }));
     }
   };
 

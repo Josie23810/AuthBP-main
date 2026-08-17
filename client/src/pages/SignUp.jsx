@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import OAuth from "../components/OAuth";
+import { apiFetch } from "../utils/api";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 40 },
@@ -32,7 +33,7 @@ const buttonVariants = {
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -44,22 +45,20 @@ export default function SignUp() {
     e.preventDefault();
     try {
       setLoading(true);
-      setError(false);
-      const res = await fetch("/api/auth/signup", {
+      setError(null);
+      const data = await apiFetch("/api/auth/signup", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-      const data = await res.json();
       setLoading(false);
       if (data.success === false) {
-        setError(true);
+        setError(data.message || "Something went wrong!");
         return;
       }
       navigate("/sign-in");
-    } catch (error) {
+    } catch (err) {
       setLoading(false);
-      setError(true);
+      setError(err.message || "Something went wrong!");
     }
   };
 
@@ -150,7 +149,7 @@ export default function SignUp() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
-              Something went wrong!
+              {error}
             </motion.p>
           )}
         </div>
