@@ -21,6 +21,31 @@ const userSchema = new mongoose.Schema(
       default:
         'https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg',
     },
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user',
+    },
+    authProvider: {
+      type: String,
+      enum: ['credentials', 'google'],
+      default: 'credentials',
+    },
+    status: {
+      type: String,
+      enum: ['active', 'disabled'],
+      default: 'active',
+    },
+    failedLoginCount: {
+      type: Number,
+      default: 0,
+    },
+    lockedUntil: {
+      type: Date,
+    },
+    lastLoginAt: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );

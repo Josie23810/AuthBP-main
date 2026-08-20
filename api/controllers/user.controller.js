@@ -15,22 +15,28 @@ export const updateUser = async (req, res, next) => {
     return next(errorHandler(401, 'You can update only your account!'));
   }
   try {
+    const updates = {};
+    if (req.body.username) updates.username = req.body.username.trim();
+    if (req.body.email) updates.email = req.body.email.trim();
+    if (req.body.profilePicture) updates.profilePicture = req.body.profilePicture;
     if (req.body.password) {
-      req.body.password = bcryptjs.hashSync(req.body.password, 10);
+      updates.password = bcryptjs.hashSync(req.body.password, 10);
+    }
+
+    if (Object.keys(updates).length === 0) {
+      return next(errorHandler(400, 'No profile changes were provided'));
     }
 
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
-      {
-        $set: {
-          username: req.body.username,
-          email: req.body.email,
-          password: req.body.password,
-          profilePicture: req.body.profilePicture,
-        },
-      },
-      { new: true }
+      { $set: updates },
+      { new: true, runValidators: true }
     );
+
+    if (!updatedUser) {
+      return next(errorHandler(404, 'User not found'));
+    }
+
     const { password, ...rest } = updatedUser._doc;
     res.status(200).json(rest);
   } catch (error) {

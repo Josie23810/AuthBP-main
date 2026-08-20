@@ -79,6 +79,18 @@ body {
   }
 }
 
+.admin-glass {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.78), rgba(8, 16, 30, 0.72));
+  backdrop-filter: blur(18px);
+  box-shadow: 0 0 40px rgba(64, 196, 255, 0.06);
+}
+
+.admin-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(64, 196, 255, 0.35) transparent;
+}
+
 a {
   text-decoration: none;
 }

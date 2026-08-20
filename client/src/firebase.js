@@ -1,4 +1,3 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
@@ -8,18 +7,19 @@ const firebaseConfig = {
   storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 const missingKeys = Object.entries(firebaseConfig)
-  .filter(([, value]) => !value)
+  .filter(([key, value]) => key !== 'measurementId' && !value)
   .map(([key]) => key);
 
-if (missingKeys.length > 0) {
+export const isFirebaseConfigured = missingKeys.length === 0;
+
+if (!isFirebaseConfigured) {
   console.warn(
     `Firebase is not configured. Add these keys to client/.env: ${missingKeys.join(', ')}`
   );
 }
 
-export const app = initializeApp(firebaseConfig);
-export const isFirebaseConfigured = missingKeys.length === 0;
-
+export const app = isFirebaseConfigured ? initializeApp(firebaseConfig) : null;

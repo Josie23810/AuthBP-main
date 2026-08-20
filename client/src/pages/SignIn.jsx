@@ -39,7 +39,15 @@ const buttonVariants = {
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
-  const { loading, error } = useSelector((state) => state.user);
+  const { loading, error } = useSelector((state) => {
+    const userError = state.user.error;
+    if (!userError || userError === false) return { loading: state.user.loading, error: null };
+    const message = userError.message || '';
+    if (message.includes('popup-closed-by-user') || message.includes('cancelled-popup-request')) {
+      return { loading: state.user.loading, error: null };
+    }
+    return { loading: state.user.loading, error: userError };
+  });
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -50,6 +58,10 @@ export default function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      if (!formData.email || !formData.password) {
+        dispatch(signInFailure({ message: "Email and password are required" }));
+        return;
+      }
       dispatch(signInStart());
       const data = await apiFetch("/api/auth/signin", {
         method: "POST",
@@ -104,6 +116,8 @@ export default function SignIn() {
                 type="email"
                 placeholder="Email"
                 id="email"
+                required
+                autoComplete="email"
                 className="w-full rounded-2xl border border-slate-600 bg-slate-950/60 p-3.5 text-white placeholder:text-slate-400 focus:border-neon-blue focus:outline-none"
                 onChange={handleChange}
               />
@@ -113,12 +127,15 @@ export default function SignIn() {
                 type="password"
                 placeholder="Password"
                 id="password"
+                required
+                autoComplete="current-password"
                 className="w-full rounded-2xl border border-slate-600 bg-slate-950/60 p-3.5 text-white placeholder:text-slate-400 focus:border-neon-blue focus:outline-none"
                 onChange={handleChange}
               />
             </motion.div>
 
             <motion.button
+              type="submit"
               disabled={loading}
               className="w-full rounded-2xl bg-gradient-to-r from-neon-red to-red-500 p-3.5 text-sm font-bold uppercase tracking-[0.18em] text-white transition-all duration-300 hover:brightness-110 disabled:opacity-60"
               variants={buttonVariants}
@@ -127,9 +144,15 @@ export default function SignIn() {
             >
               {loading ? "Loading..." : "Sign In"}
             </motion.button>
-
-            <OAuth />
           </form>
+
+          <div className="my-5 flex items-center gap-3 text-xs uppercase tracking-[0.18em] text-slate-500">
+            <span className="h-px flex-1 bg-white/10" />
+            or
+            <span className="h-px flex-1 bg-white/10" />
+          </div>
+
+          <OAuth />
 
           <motion.div className="mt-6 flex justify-center gap-2 text-sm text-slate-300" variants={cardVariants}>
             <p>Don't have an account?</p>
@@ -137,6 +160,13 @@ export default function SignIn() {
               <span className="font-semibold text-neon-blue transition hover:text-gold-accent">Create one</span>
             </Link>
           </motion.div>
+
+          <p className="mt-4 text-center text-xs text-slate-500">
+            Staff access is separate.{' '}
+            <Link to="/admin/sign-in" className="font-semibold text-gold-accent hover:underline">
+              Open the admin portal
+            </Link>
+          </p>
 
           {error && (
             <motion.p

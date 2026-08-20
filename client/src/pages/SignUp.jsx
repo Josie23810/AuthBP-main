@@ -46,6 +46,11 @@ export default function SignUp() {
     try {
       setLoading(true);
       setError(null);
+      if (!formData.username || !formData.email || !formData.password) {
+        setLoading(false);
+        setError("Username, email, and password are required");
+        return;
+      }
       const data = await apiFetch("/api/auth/signup", {
         method: "POST",
         body: JSON.stringify(formData),
@@ -100,6 +105,8 @@ export default function SignUp() {
                 type="text"
                 placeholder="Username"
                 id="username"
+                required
+                autoComplete="username"
                 className="w-full rounded-2xl border border-slate-600 bg-slate-950/60 p-3.5 text-white placeholder:text-slate-400 focus:border-neon-blue focus:outline-none"
                 onChange={handleChange}
               />
@@ -109,6 +116,8 @@ export default function SignUp() {
                 type="email"
                 placeholder="Email"
                 id="email"
+                required
+                autoComplete="email"
                 className="w-full rounded-2xl border border-slate-600 bg-slate-950/60 p-3.5 text-white placeholder:text-slate-400 focus:border-neon-blue focus:outline-none"
                 onChange={handleChange}
               />
@@ -118,12 +127,15 @@ export default function SignUp() {
                 type="password"
                 placeholder="Password"
                 id="password"
+                required
+                autoComplete="new-password"
                 className="w-full rounded-2xl border border-slate-600 bg-slate-950/60 p-3.5 text-white placeholder:text-slate-400 focus:border-neon-blue focus:outline-none"
                 onChange={handleChange}
               />
             </motion.div>
 
             <motion.button
+              type="submit"
               disabled={loading}
               className="w-full rounded-2xl bg-gradient-to-r from-neon-blue to-sky-500 p-3.5 text-sm font-bold uppercase tracking-[0.18em] text-white transition-all duration-300 hover:brightness-110 disabled:opacity-60"
               variants={buttonVariants}
@@ -132,9 +144,15 @@ export default function SignUp() {
             >
               {loading ? "Loading..." : "Sign Up"}
             </motion.button>
-
-            <OAuth />
           </form>
+
+          <div className="my-5 flex items-center gap-3 text-xs uppercase tracking-[0.18em] text-slate-500">
+            <span className="h-px flex-1 bg-white/10" />
+            or
+            <span className="h-px flex-1 bg-white/10" />
+          </div>
+
+          <OAuth />
 
           <motion.div className="mt-6 flex justify-center gap-2 text-sm text-slate-300" variants={cardVariants}>
             <p>Have an account?</p>

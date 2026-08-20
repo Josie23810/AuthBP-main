@@ -11,7 +11,7 @@ export async function parseJsonResponse(res) {
     return JSON.parse(text);
   } catch {
     throw new Error(
-      'Invalid response from server. Make sure the API server is running on port 3000.'
+      'The API did not return JSON. From the project root run "npm run dev" so the server is listening on port 3000, then retry.'
     );
   }
 }

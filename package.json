@@ -29,6 +29,7 @@
     "express-list-endpoints": "^7.1.1",
     "framer-motion": "^12.11.0",
     "jsonwebtoken": "^9.0.2",
+    "mongodb-memory-server": "^10.4.3",
     "mongoose": "^8.14.2",
     "nodemon": "^3.1.10",
     "tsparticles-engine": "^2.12.0"
